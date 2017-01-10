@@ -4,6 +4,13 @@ MAINTAINER Gaetan Pralong <contact@aston.com>
 # Mise à jour de la liste des dépôts de Debian
 RUN apt-get update
 
+#Mise à jour des packets de l'OS Debian
+RUN apt-get upgrade -y
+
+#Activation du module Rewrite pour Apache2
+RUN a2enmod rewrite
+RUN service apache2 restart
+
 #Installation de la librairie Php-curl pour composer
 RUN apt-get install php5-curl -y
 
@@ -12,5 +19,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv ./composer.phar /usr/bin/composer
+
+#Récupération du projet Composer impossible à ce stade du build puisque le docker-compose.yml n'a pas encore pris la main et le dossier /var/www/html ne contient que le fichier index.php d'origine du server (composer.json inaccessible).
+#RUN cd /var/www/html/
+#RUN composer install
+
 
 

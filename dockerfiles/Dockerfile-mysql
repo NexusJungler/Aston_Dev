@@ -1,0 +1,4 @@
+FROM mysql
+MAINTAINER Olive <olvmarchand@gmail.com>
+
+RUN mysql -uroot -paston

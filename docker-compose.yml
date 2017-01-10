@@ -5,8 +5,33 @@ services:
       context: './dockerfiles'
       dockerfile: 'Dockerfile-apache'
     container_name: 'apache'
+    working_dir: '/var/www/html'
     ports:
       - '80:80'
     volumes:
       - '/home/aston/Public/docker-project/poo:/var/www/html'
       - '/home/aston/Public/docker-project/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf'
+    links:
+      - 'mysql:mysql.server.com'
+  mysql:
+    image: 'mysql'
+    container_name: 'mysql'
+    working_dir: '/etc/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'paris'
+      MYSQL_DATABASE: 'aston'
+      MYSQL_USER: 'olive'
+      MYSQL_PASSWORD: 'tonton'
+    ports:
+      - '3306:3306'
+    volumes:
+      - '/home/aston/Public/docker-project/mysql/shared:/root/shared'
+  phpmyadmin:
+    image: 'phpmyadmin/phpmyadmin'
+    container_name: 'phpmyadmin'
+    environment:
+      PMA_HOST: 'mysql.server.com'
+    ports:
+      - '8080:80'
+    links:
+      - 'mysql:mysql.server.com'
